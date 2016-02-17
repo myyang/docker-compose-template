@@ -1,0 +1,31 @@
+data:
+    image: debian
+    volumes:
+        - /var/sources:/var/sources
+
+app:
+    image: debain
+    volumes:
+        - /var/app_host:/var/app_host
+    volumes_from:
+        - data
+    expose:
+        - "8080"
+    log_driver: "json-file"
+    log_opt:
+        max-size: "50m"
+        max-file: "7"
+
+nginx:
+    image: nginx
+    links:
+        - app
+    env_file:
+        - nginx_env
+    ports:
+        - "80:80"
+        - "443:443"
+    log_driver: "json-file"
+    log_opt:
+        max-size: "50m"
+        max-file: "7"
